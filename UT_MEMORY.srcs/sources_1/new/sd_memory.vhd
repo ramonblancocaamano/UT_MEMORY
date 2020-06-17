@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------
--- @FILE : memory.vhd 
+-- @FILE : sd_memory.vhd 
 -- @AUTHOR: BLANCO CAAMANO, RAMON. <ramonblancocaamano@gmail.com> 
 -- 
 -- @ABOUT: MANAGEMENT OF NON-VOLATILE SD MEMORY.
@@ -7,7 +7,7 @@
 LIBRARY IEEE;
 USE IEEE.STD_LOGIC_1164.ALL;
 
-ENTITY memory IS
+ENTITY sd_memory IS
     GENERIC( 
         DATA : INTEGER := 4096;
         PACKETS : INTEGER := 32768
@@ -17,24 +17,24 @@ ENTITY memory IS
         clk_50 : IN STD_LOGIC;
         din: IN STD_LOGIC_VECTOR(7 DOWNTO 0);
         dout: OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-        rd_trigger: IN STD_LOGIC;
-        rd_trigger_ok: OUT STD_LOGIC;
-        rd_continue: OUT STD_LOGIC;
-        rd_continue_ok: IN STD_LOGIC;
-        wr_trigger: OUT STD_LOGIC;
-        wr_trigger_ok: IN STD_LOGIC;
-        wr_continue : IN STD_LOGIC;
-        wr_continue_ok : OUT STD_LOGIC;
-        i_buff_rd_en: OUT STD_LOGIC;        
-        o_buff_wr_en: OUT STD_LOGIC;    
+        hsk_rd0: IN STD_LOGIC;
+        hsk_rd_ok0: OUT STD_LOGIC;
+        hsk_wr0: OUT STD_LOGIC;
+        hsk_wr_ok0: IN STD_LOGIC;
+        hsk_rd1: OUT STD_LOGIC;
+        hsk_rd_ok1: IN STD_LOGIC;
+        hsk_wr1 : IN STD_LOGIC;
+        hsk_wr_ok1 : OUT STD_LOGIC;
+        buff_rd_en: OUT STD_LOGIC;        
+        buff_wr_en: OUT STD_LOGIC;    
         i_miso : IN STD_LOGIC;     
         o_cs : OUT STD_LOGIC;				
         o_mosi : OUT STD_LOGIC;					
         o_sclk : OUT STD_LOGIC
     );
-END memory;
+END sd_memory;
 
-ARCHITECTURE behavioral OF memory IS
+ARCHITECTURE behavioral OF sd_memory IS
 
     COMPONENT sd
         GENERIC (
@@ -83,16 +83,16 @@ ARCHITECTURE behavioral OF memory IS
         PORT(      
             rst: IN STD_LOGIC;
             clk_50 : IN STD_LOGIC;            
-            rd_trigger: IN STD_LOGIC;
-            rd_trigger_ok: OUT STD_LOGIC;
-            rd_continue: OUT STD_LOGIC;
-            rd_continue_ok: IN STD_LOGIC;                        
-            wr_trigger: OUT STD_LOGIC;
-            wr_trigger_ok: IN STD_LOGIC;
-            wr_continue : IN STD_LOGIC;
-            wr_continue_ok : OUT STD_LOGIC;
-            i_buff_rd_en: OUT STD_LOGIC;        
-            o_buff_wr_en: OUT STD_LOGIC;  
+            hsk_rd0: IN STD_LOGIC;
+            hsk_rd_ok0: OUT STD_LOGIC;
+            hsk_wr0: OUT STD_LOGIC;
+            hsk_wr_ok0: IN STD_LOGIC;                        
+            hsk_rd1: OUT STD_LOGIC;
+            hsk_rd_ok1: IN STD_LOGIC;
+            hsk_wr1 : IN STD_LOGIC;
+            hsk_wr_ok1 : OUT STD_LOGIC;
+            buff_rd_en: OUT STD_LOGIC;        
+            buff_wr_en: OUT STD_LOGIC;  
             sd_rst : OUT STD_LOGIC ;
             sd_addr: OUT STD_LOGIC_VECTOR(31 downto 0);
             sd_rd_en: OUT STD_LOGIC;        
@@ -154,16 +154,16 @@ BEGIN
         PORT MAP(
             rst => rst,
             clk_50 => clk_50,
-            rd_trigger => rd_trigger,
-            rd_trigger_ok => rd_trigger_ok, 
-            rd_continue => rd_continue,
-            rd_continue_ok => rd_continue_ok, 
-            wr_trigger => wr_trigger, 
-            wr_trigger_ok => wr_trigger_ok,
-            wr_continue  => wr_continue,
-            wr_continue_ok => wr_continue_ok,
-            i_buff_rd_en => i_buff_rd_en,
-            o_buff_wr_en => o_buff_wr_en, 
+            hsk_rd0 => hsk_rd0,
+            hsk_rd_ok0 => hsk_rd_ok0, 
+            hsk_wr0 => hsk_wr0,
+            hsk_wr_ok0 => hsk_wr_ok0, 
+            hsk_rd1 => hsk_rd1, 
+            hsk_rd_ok1 => hsk_rd_ok1,
+            hsk_wr1  => hsk_wr1,
+            hsk_wr_ok1 => hsk_wr_ok1,
+            buff_rd_en => buff_rd_en,
+            buff_wr_en => buff_wr_en, 
             sd_rst => sd_rst,
             sd_addr => sd_addr,
             sd_rd_en => sd_rd_en, 
